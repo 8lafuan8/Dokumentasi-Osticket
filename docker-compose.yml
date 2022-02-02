@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+  db:
+    image: mysql:5.7.36
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: kplptsiunsoed
+    volumes:
+    - "./database:/var/lib/mysql"
+    ports:
+    - "9383:3306"
+  db_pma:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+    - db
+    ports:
+    - 9382:80
+    environment:
+      MYSQL_ROOT_PASSWORD: kplptsiunsoed
+      PMA_USER: root
+      PMA_PASSWORD: kplptsiunsoed
+  osticket:
+    depends_on:
+    - db
+    image: naufalss/osticketfullextension:1
+    volumes:
+    - "./osticket:/var/www/html"
+    ports:
+    - 9380:80
+  
